@@ -1,0 +1,51 @@
+body {
+    background-color: burlywood;
+}
+
+header h1 {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+img {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 150px;
+    height: auto;
+    clip-path: ellipse(50% 40%);
+}
+
+.container-fluid {
+    margin-top: 50px;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+.list-group-item {
+    font-weight: bold;
+}
+
+.list-group-item.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.list-group-item-action:hover {
+    background-color: #f8f9fa;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 16px;
+}
+
+.table th, .table td {
+    text-align: center;
+}

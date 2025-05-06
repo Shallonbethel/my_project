@@ -1,0 +1,224 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    title Signup List
+    link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css')
+    link(rel='stylesheet' href='/css/sales.css')
+  body
+    // Top Navbar
+    nav.navbar.navbar-expand-lg.navbar-dark()
+      .container-fluid
+        a.navbar-brand(href='/') KGL System
+        button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarNav')
+          span.navbar-toggler-icon
+        #navbarNav.collapse.navbar-collapse
+          ul.navbar-nav.ms-auto
+            //- li.nav-item
+            //-   a.nav-link(href='/') Home
+            li.nav-item
+              a.nav-link(href='/creditSaleList') Credits
+            li.nav-item
+              a.nav-link(href='/procurementList') Procurement
+            li.nav-item
+              a.nav-link(href='/sell/saleslist') Sales
+            li.nav-item
+              a.nav-link(href='/signupList') Users
+            li.nav-item
+              a.nav-link(href='/index') Logout
+
+    .container-fluid
+      .row
+        // Sidebar
+        .col-md-2.sidebar
+          ul.nav.flex-column
+            if user
+              li.nav-item
+                a.nav-link(href=user.role === 'director' ? '/dashboard' : user.role === 'manager' ? '/manager-dashboard' : '/sales-manager-dashboard') Dashboard
+            li.nav-item
+              a.nav-link(href='/add') Add Credit
+            li.nav-item
+              a.nav-link(href='/procure') Add Procurement
+            li.nav-item
+              a.nav-link(href='/sell') Add Sale
+            li.nav-item
+              a.nav-link(href='/signup') Add User
+            //- li.nav-item
+            //-   a.nav-link(href='/about') About
+
+        // Main Content
+        .col-md-10.main-content
+          .container.mt-5
+            h2.text-center.mb-4 Registered Users
+            if error
+              .alert.alert-danger= error
+            if success
+              .alert.alert-success= success
+            .card.shadow
+              .card-body
+                if users && users.length > 0
+                  table.table.table-striped
+                    thead
+                      tr
+                        th Full Name
+                        th Email
+                        th Role
+                        th Branch
+                        th Created At
+                        th Actions
+                    tbody
+                      each user in users
+                        tr
+                          td= user.fname
+                          td= user.email
+                          td= user.role
+                          td= user.branch
+                          td= new Date(user.createdAt).toLocaleDateString()
+                          td
+                            .btn-group
+                              button.btn.btn-sm.btn-primary(onclick=`editUser('${user._id}')`) Edit
+                              button.btn.btn-sm.btn-danger(onclick=`deleteUser('${user._id}')`) Delete
+                else
+                  p.text-center No users registered yet.
+
+    // Delete Confirmation Modal
+    #deleteModal.modal.fade(tabindex='-1')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h5.modal-title Confirm Delete
+            button.btn-close(type='button', data-bs-dismiss='modal')
+          .modal-body
+            p Are you sure you want to delete this user?
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancel
+            button#confirmDelete.btn.btn-danger(type='button') Delete
+
+    // Edit User Modal
+    #editModal.modal.fade(tabindex='-1')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h5.modal-title Edit User
+            button.btn-close(type='button', data-bs-dismiss='modal')
+          .modal-body
+            form#editUserForm
+              input#userId(type='hidden')
+              .mb-3
+                label.form-label(for='editFname') Full Name
+                input#editFname.form-control(type='text', required)
+              .mb-3
+                label.form-label(for='editEmail') Email
+                input#editEmail.form-control(type='email', required)
+              .mb-3
+                label.form-label(for='editRole') Role
+                select#editRole.form-control(required)
+                  option(value='director') Director
+                  option(value='manager') Manager
+                  option(value='salesAgent') Sales Agent
+              .mb-3
+                label.form-label(for='editBranch') Branch
+                input#editBranch.form-control(type='text', required)
+              .mb-3
+                label.form-label(for='editPassword') New Password (leave blank to keep current)
+                input#editPassword.form-control(type='password')
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancel
+            button#saveEdit.btn.btn-primary(type='button') Save Changes
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js')
+    script.
+      let deleteModal;
+      let editModal;
+      let userToDelete = null;
+
+      document.addEventListener('DOMContentLoaded', () => {
+        deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        editModal = new bootstrap.Modal(document.getElementById('editModal'));
+      });
+
+      async function deleteUser(id) {
+        userToDelete = id;
+        deleteModal.show();
+      }
+
+      document.getElementById('confirmDelete').addEventListener('click', async () => {
+        if (!userToDelete) return;
+        
+        try {
+          const response = await fetch(`/users/${userToDelete}`, {
+            method: 'DELETE'
+          });
+          
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            const data = await response.json();
+            alert(data.error || 'Failed to delete user');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Failed to delete user');
+        }
+        
+        deleteModal.hide();
+        userToDelete = null;
+      });
+
+      async function editUser(id) {
+        try {
+          const response = await fetch(`/users/${id}`);
+          const user = await response.json();
+          
+          if (response.ok) {
+            document.getElementById('userId').value = user._id;
+            document.getElementById('editFname').value = user.fname;
+            document.getElementById('editEmail').value = user.email;
+            document.getElementById('editRole').value = user.role;
+            document.getElementById('editBranch').value = user.branch;
+            document.getElementById('editPassword').value = '';
+            
+            editModal.show();
+          } else {
+            alert('Failed to load user details');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Failed to load user details');
+        }
+      }
+
+      document.getElementById('saveEdit').addEventListener('click', async () => {
+        const form = document.getElementById('editUserForm');
+        const formData = new FormData(form);
+        const userId = document.getElementById('userId').value;
+        
+        try {
+          const response = await fetch(`/users/${userId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              fname: formData.get('editFname'),
+              email: formData.get('editEmail'),
+              role: formData.get('editRole'),
+              branch: formData.get('editBranch'),
+              password: formData.get('editPassword') || undefined
+            })
+          });
+          
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            const data = await response.json();
+            alert(data.error || 'Failed to update user');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Failed to update user');
+        }
+        
+        editModal.hide();
+      });

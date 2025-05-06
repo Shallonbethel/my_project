@@ -1,0 +1,68 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: burlywood;
+  }
+  
+  .navbar {
+    background-color: #8B4513;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    margin-left: 15px;
+  }
+  
+  .sidebar {
+    background-color: #deb887;
+    width: 200px;
+    height: 100vh;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebar h3 {
+    margin-top: 0;
+  }
+  
+  .sidebar a {
+    display: block;
+    margin: 10px 0;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .main-content {
+    margin-left: 220px;
+    padding: 20px;
+  }
+  
+  form input,
+  form select,
+  form button {
+    margin-bottom: 10px;
+    padding: 8px;
+    width: 300px;
+    display: block;
+  }
+  
+  form button {
+    background-color: #8B4513;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  form button:hover {
+    background-color: #A0522D;
+  }
+  

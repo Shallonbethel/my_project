@@ -1,0 +1,86 @@
+/* Color Palette based on SaddleBrown */
+:root {
+  --saddle-main: #8B4513;
+  --saddle-dark: #8B4513;
+  --saddle-light: #a0522d;
+  --saddle-bg: #fdf7f2;
+  --text-light: #fff;
+  --text-dark: #8B4513;
+}
+
+
+
+/* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body.bg-light {
+  background-color: var(--saddle-bg);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #8B4513;
+}
+
+/* Card Styling */
+.card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+/* Left column */
+.bg-success {
+  background-color: var(--saddle-main) !important;
+}
+
+.bg-gradient {
+  background: linear-gradient(135deg, var(--saddle-dark), var(--saddle-main)) !important;
+}
+
+.card .text-white h3,
+.card .text-white p {
+  color: var(--text-light);
+}
+
+/* Form Section */
+h2.text-center {
+  color: var(--saddle-dark);
+}
+
+.btn-success {
+  background-color: var(--saddle-main);
+  border: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+  background-color: var(--saddle-dark);
+  transform: scale(1.02);
+}
+
+.form-control:focus {
+  border-color: var(--saddle-main);
+  box-shadow: 0 0 0 0.2rem #8B4513;
+}
+
+a.text-decoration-none {
+  color: var(--saddle-light);
+  font-size: 0.9rem;
+}
+
+a.text-decoration-none:hover {
+  color: var(--saddle-dark);
+  text-decoration: underline;
+}
+
+.alert-danger {
+  display: none;
+  background-color: #f8d7da;
+  border-color: #f5c2c7;
+  color: #842029;
+  
+}

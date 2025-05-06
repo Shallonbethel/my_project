@@ -1,0 +1,10 @@
+nav.navbar.navbar-expand-lg.navbar-dark()
+  .container-fluid
+    a.navbar-brand(href='/') KGL System
+    // Dashboard button for all users
+    if user && user.role === 'director'
+      a.btn.btn-outline-primary.ms-2(href='/dashboard') Dashboard
+    else if user && user.role === 'manager'
+      a.btn.btn-outline-primary.ms-2(href='/manager-dashboard') Dashboard
+    else if user && user.role === 'agent'
+      a.btn.btn-outline-primary.ms-2(href='/sales-manager-dashboard') Dashboard 

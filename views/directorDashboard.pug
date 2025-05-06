@@ -1,0 +1,102 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    title Dashboard
+    link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css')
+    link(rel='stylesheet' href='/css/sales.css')
+  body
+    // Top Navbar
+    nav.navbar.navbar-expand-lg.navbar-dark()
+      .container-fluid
+        a.navbar-brand(href='/') KGL System
+        button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarNav')
+          span.navbar-toggler-icon
+        #navbarNav.collapse.navbar-collapse
+          ul.navbar-nav.ms-auto
+            li.nav-item
+              a.nav-link(href='/creditSaleList') Credits
+            li.nav-item
+              a.nav-link(href='/procurementList') Procurement
+            li.nav-item
+              a.nav-link(href='/sell/saleslist') Sales
+            li.nav-item
+              a.nav-link(href='/signupList') Users
+            li.nav-item
+              a.nav-link(href='/index') Logout
+
+    .container-fluid
+      .row
+        // Sidebar
+        .col-md-2.sidebar
+          ul.nav.flex-column
+            if user
+              li.nav-item
+                a.nav-link(href=user.role === 'director' ? '/dashboard' : user.role === 'manager' ? '/manager-dashboard' : '/sales-manager-dashboard') Dashboard
+            li.nav-item
+              a.nav-link(href='/add') Add Credit
+            li.nav-item
+              a.nav-link(href='/procure') Add Procurement
+            li.nav-item
+              a.nav-link(href='/sell') Add Sale
+            li.nav-item
+              a.nav-link(href='/signup') Add User
+            //- li.nav-item
+            //-   a.nav-link(href='/about') About
+
+        // Main Content
+        .col-md-10.main-content
+          .container.mt-4
+            h2.mb-4 Welcome M.r Orban.
+            // Flex Cards
+            .d-flex.gap-4.mb-4.flex-wrap
+              .card.shadow.flex-fill(style='min-width:220px;max-width:320px;background:#f8f9fa;')
+                .card-body.text-center
+                  h5.card-title.text-primary.mb-3 Total Procurement Cost
+                  h2.mb-0 #{procure.totalcost || 0}
+              .card.shadow.flex-fill(style='min-width:220px;max-width:320px;background:#f8f9fa;')
+                .card-body.text-center
+                  h5.card-title.text-success.mb-3 Total Sales
+                  h2.mb-0 #{sales.totalpayment || 0}
+              .card.shadow.flex-fill(style='min-width:220px;max-width:320px;background:#f8f9fa;')
+                .card-body.text-center
+                  h5.card-title.text-warning.mb-3 Total Credit Due
+                  h2.mb-0 #{credit.amountDue || 0}
+            // Procurement Table
+            .card.shadow
+              .card-body
+                h4.mb-3 Procurement Records
+                if procurements && procurements.length
+                  table.table.table-striped
+                    thead
+                      tr
+                        th Produce Name
+                        th Type
+                        th Date
+                        th Time
+                        th Tonnage (kg)
+                        th Cost (UGX)
+                        th Dealer Name
+                        th Branch
+                        th Contact
+                        th Selling Price (UGX)
+                    tbody
+                      each item in procurements
+                        tr
+                          td= item.produceName
+                          td= item.produceType
+                          td= item.date ? item.date.toDateString() : ''
+                          td= item.time
+                          td= item.tonnage
+                          td= item.cost
+                          td= item.dealerName
+                          td= item.branch
+                          td= item.contact
+                          td= item.sellingPrice
+                else
+                  p No procurement records found.
+
+    // Footer
+    footer.footer.mt-5.py-3.bg-light.text-center
+      p.mb-0 &copy; 2024 KGL System. All rights reserved.

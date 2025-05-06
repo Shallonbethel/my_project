@@ -1,0 +1,91 @@
+doctype html
+html
+  head
+    title Sales Form - KGL
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/sales.css')
+  body
+    // Top Navbar
+    nav.navbar.navbar-expand-lg.navbar-dark()
+      .container-fluid
+        a.navbar-brand(href='/') KGL System
+        button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarNav')
+          span.navbar-toggler-icon
+        #navbarNav.collapse.navbar-collapse
+          ul.navbar-nav.ms-auto
+            li.nav-item
+              a.nav-link(href='/creditSaleList') Credits
+            li.nav-item
+              a.nav-link(href='/procurementList') Procurement
+            li.nav-item
+              a.nav-link(href='/sell/saleslist') Sales
+            li.nav-item
+              a.nav-link(href='/signupList') Users
+            li.nav-item
+              a.nav-link(href='/index') Logout
+
+    .container-fluid
+      .row
+        // Sidebar
+        .col-md-2.sidebar
+          ul.nav.flex-column
+            if user
+              li.nav-item
+                a.nav-link(href=user.role === 'director' ? '/dashboard' : user.role === 'manager' ? '/manager-dashboard' : '/salesAgentDashboard') Dashboard
+            if user && (user.role === 'manager' || user.role === 'director')
+              li.nav-item
+                a.nav-link(href='/procure') Add Procurement
+            li.nav-item
+              a.nav-link(href='/sell') Add Sale
+            li.nav-item
+              a.nav-link(href='/add') Add Credit
+            li.nav-item
+              a.nav-link(href='/signup') Add User
+
+        // Main Content
+        .col-md-10.main-content
+          h2.text-center.mt-4.mb-4 Record Produce Sale
+
+          if error
+            .alert.alert-danger.text-center= error
+
+          if success
+            .alert.alert-success.text-center= success
+
+          .row.justify-content-center
+            .col-md-8
+              form.row.g-3(action='/sell' method='POST')
+                .col-md-6
+                  label.form-label(for='produceName') Produce Name
+                  input.form-control.form-control-sm(type='text', name='produceName', id='produceName', placeholder='Enter produce name', required)
+
+                .col-md-6
+                  label.form-label(for='tonnage') Tonnage (kg)
+                  input.form-control.form-control-sm(type='number', name='tonnage', id='tonnage', placeholder='Enter tonnage', min='1', required)
+
+                .col-md-6
+                  label.form-label(for='amountPaid') Amount Paid (UGX)
+                  input.form-control.form-control-sm(type='number', name='amountPaid', id='amountPaid', placeholder='Enter amount', min='10000', required)
+
+                .col-md-6
+                  label.form-label(for='buyerName') Buyer Name
+                  input.form-control.form-control-sm(type='text', name='buyerName', id='buyerName', placeholder='Enter buyer name', minlength='2', required)
+
+                .col-md-6
+                  label.form-label(for='salesAgentName') Sales Agent
+                  input.form-control.form-control-sm(type='text', name='salesAgentName', id='salesAgentName', value=user.fname, readonly)
+
+                .col-md-6
+                  label.form-label(for='date') Date
+                  input.form-control.form-control-sm(type='date', name='date', id='date', required)
+
+                .col-md-6
+                  label.form-label(for='time') Time
+                  input.form-control.form-control-sm(type='time', name='time', id='time', required)
+
+                .col-12.text-center
+                  button.btn.btn-primary.btn-sm(type='submit') Submit Sale
+
+    script(src='/js/procurementForm.js')

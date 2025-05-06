@@ -1,0 +1,32 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "Ayebare Shallon",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "connect-ensure-login": "^0.1.1",
+    "connect-flash": "^0.1.1",
+    "dotenv": "^16.5.0",
+    "express": "^4.18.2",
+    "express-session": "^1.18.1",
+    "express-validator": "^7.2.1",
+    "http-auth": "^4.2.0",
+    "moment": "^2.30.1",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.13.2",
+    "nodemon": "^3.1.9",
+    "passport": "^0.7.0",
+    "passport-local-mongoose": "^8.0.0",
+    "path": "^0.12.7",
+    "path-to-regexp": "^6.2.1",
+    "pug": "^3.0.3",
+    "session": "^0.1.0"
+  }
+}
