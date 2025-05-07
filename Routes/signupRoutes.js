@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
-const { ensureManagerOrDirector } = require('../middlewares/roleCheck');
+const { ensureDirector } = require('../middlewares/roleCheck');
 
 // GET: Render signup form
-router.get('/signup', ensureManagerOrDirector, (req, res) => {
+router.get('/signup', ensureDirector, (req, res) => {
   res.render('signup', { 
     user: req.user,
     title: 'Add User',
@@ -45,7 +45,7 @@ router.get('/users/:id', async (req, res) => {
 });
 
 // PUT: Update user
-router.put('/users/:id', ensureManagerOrDirector, async (req, res) => {
+router.put('/users/:id', ensureDirector, async (req, res) => {
   try {
     const { fname, email, role, branch, password } = req.body;
 
@@ -79,7 +79,7 @@ router.put('/users/:id', ensureManagerOrDirector, async (req, res) => {
 });
 
 // DELETE: Delete user
-router.delete('/users/:id', ensureManagerOrDirector, async (req, res) => {
+router.delete('/users/:id', ensureDirector, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
@@ -103,7 +103,7 @@ router.delete('/users/:id', ensureManagerOrDirector, async (req, res) => {
 });
 
 // POST: Handle signup submission
-router.post('/signup', ensureManagerOrDirector, async (req, res) => {
+router.post('/signup', ensureDirector, async (req, res) => {
   try {
     const { fname, email, password, role, branch } = req.body;
 

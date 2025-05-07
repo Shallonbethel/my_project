@@ -71,7 +71,7 @@ app.use(flash());
 
 // Set flash message vars globally
 app.use((req, res, next) => {
-  console.log('User in middleware:', req.user); // Debug log
+  console.log('User in middleware:', req.user); 
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
